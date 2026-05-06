@@ -13,8 +13,14 @@ static partial class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        Task.Run(FlowInterops.Run);
-        BuildAvaloniaApp().Start(WaitForTriggerAndStart, args);
+#if DEBUG
+        Flow.EnableTaskInvokingInfo = true;
+#endif
+        Task.Run(FlowInterops.Run).ContinueWith(task =>
+        {
+            if (task.Exception != null) throw task.Exception;
+        });
+        BuildAvaloniaApp().Start(AppMain, args);
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.
@@ -24,24 +30,43 @@ static partial class Program
             .WithInterFont()
             .LogToTrace();
 
-    private static readonly ManualResetEventSlim OnAvaloniaStart = new(false);
+    private static readonly ManualResetEventSlim OnAvaloniaStart = new();
     private static readonly TaskCompletionSource OnAvaloniaEnd = new();
+    private static readonly ManualResetEventSlim OnProgramEnd = new();
+    private static readonly ManualResetEventSlim OnProgramExit = new();
     private static readonly CancellationTokenSource OnAvaloniaEndTokenSource = new();
 
-    private static void WaitForTriggerAndStart(Application app, string[] args)
+    private static void AppMain(Application app, string[] args)
     {
         OnAvaloniaStart.Wait();
         app.Run(OnAvaloniaEndTokenSource.Token);
         OnAvaloniaEnd.SetResult();
+        OnProgramEnd.Wait();
+        OnProgramExit.Set();
+        Environment.Exit(0);
     }
 
-    [Flow.Task]
+    [Flow.Task] [Flow.Run]
     [Flow.Task("load:before")] [Flow.Run(After = "app")]
     [Flow.Task("load")] [Flow.Run(After = "app:load:before")]
     [Flow.Task("run:before")] [Flow.Run(After = "app:load")]
     [Flow.Task("stop:before")] [Flow.Run(After = "app:run")]
     [Flow.Task("stop")] [Flow.Run(After = "app:stop:before")]
-    private static Task _() => Task.CompletedTask;
+    [Flow.Task("exit:before")] [Flow.Run(After = "app:stop")]
+    [Flow.Task("exit")] [Flow.Run(After = "app:exit:before")]
+    private static Task _([Flow.InvokingInfo] FlowTaskInvokingInfo
+#if DEBUG
+        info
+#else
+        _
+#endif
+    ) {
+#if DEBUG
+        var (target, _, callers) = info;
+        Console.WriteLine($"Wildcard function '{target}' has been invoked by ['{string.Join("', '", callers)}']");
+#endif
+        return Task.CompletedTask;
+    }
 
     [Flow.Task] [Flow.Run(After = "app:run:before")]
     private static async Task Run()
@@ -53,12 +78,18 @@ static partial class Program
     [Flow.Task("func:stop")]
     private static async Task StopAvaloniaAsync()
     {
+        Console.WriteLine("Stopping...");
         await OnAvaloniaEndTokenSource.CancelAsync().ConfigureAwait(false);
     }
 
-    [Flow.Task("func:exit")] [Flow.Run(After = "app:stop")]
+    [Flow.Task("func:exit")] [Flow.Run(After = "app:exit")]
     private static void EndProgram()
     {
-        Environment.Exit(0);
+        Console.WriteLine("Exiting...");
+        OnProgramEnd.Set();
+        OnProgramExit.Wait(TimeSpan.FromSeconds(5));
+        if (OnProgramExit.IsSet) return;
+        Console.WriteLine("Exit request timeout, force exiting...");
+        Environment.Exit(1);
     }
 }
