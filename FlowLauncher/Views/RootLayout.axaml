@@ -9,9 +9,15 @@
         x:DataType="vm:RootLayoutViewModel">
     <DockPanel>
         <!-- top bar -->
-        <Border DockPanel.Dock="Top" Height="{StaticResource TopBarHeight}"
+        <Grid DockPanel.Dock="Top" Height="{StaticResource TopBarHeight}"
                 Background="{DynamicResource FlowAccent}" PointerPressed="TopBar_OnPointerPressed">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10"
+                    Opacity="{Binding !HasLastPage, Converter={x:Static c:Converters.BooleanToOpacity}}">
+                <StackPanel.Transitions>
+                    <Transitions>
+                        <DoubleTransition Property="Opacity" Duration="0:0:.1"/>
+                    </Transitions>
+                </StackPanel.Transitions>
                 <StackPanel.Styles>
                     <Style Selector="c|FlowRadioButton">
                         <Setter Property="IsChecked">
@@ -31,9 +37,10 @@
                 <c:FlowRadioButton Classes="TopBar" Icon="{StaticResource IconTools}" Text="工具" Tag="tools"/>
                 <c:FlowRadioButton Classes="TopBar" Icon="{StaticResource IconSettings}" Text="设置" Tag="settings"/>
             </StackPanel>
-        </Border>
+            <Border Background="Transparent" IsVisible="{Binding HasLastPage}"/>
+        </Grid>
         <!-- main content -->
-        <Grid Background="{DynamicResource FlowBackground}" Opacity=".9">
+        <Grid>
         </Grid>
     </DockPanel>
 </UserControl>

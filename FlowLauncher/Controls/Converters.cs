@@ -4,7 +4,9 @@ namespace FlowLauncher.Controls;
 
 public static class Converters
 {
-    public static readonly FuncMultiValueConverter<string?, bool> AllEqual = new(parts =>
+    public static readonly FuncValueConverter<bool, double> BooleanToOpacity = new(static value => value ? 1 : 0);
+
+    public static readonly FuncMultiValueConverter<string?, bool> AllEqual = new(static parts =>
     {
         using var it = parts.GetEnumerator();
         if (!it.MoveNext()) return true;
