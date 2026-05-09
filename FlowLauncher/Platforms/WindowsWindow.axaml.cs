@@ -52,11 +52,6 @@ public sealed partial class WindowsWindow : BaseWindow
         WindowState = WindowState.Minimized;
     }
 
-    private void TitleButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-        RootLayout.ForwardCommand.Execute("main");
-    }
-
     private void BackButton_OnClick(object? sender, RoutedEventArgs e)
     {
         RootLayout.BackCommand.Execute(null);

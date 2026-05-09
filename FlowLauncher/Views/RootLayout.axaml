@@ -41,6 +41,7 @@
         </Grid>
         <!-- main content -->
         <Grid>
+            <Button Content="Forward" Command="{Binding ForwardCommand}" CommandParameter="tools"/>
         </Grid>
     </DockPanel>
 </UserControl>

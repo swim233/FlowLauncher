@@ -1,4 +1,6 @@
-using FlowLauncher.Views;
+using Avalonia.Interactivity;
+using Avalonia.Media;
+using Avalonia.Threading;
 
 namespace FlowLauncher.Platforms;
 
@@ -6,11 +8,23 @@ public sealed partial class MacWindow : BaseWindow
 {
     public MacWindow()
     {
-        Content = new RootLayout
-        {
-            ParentWindow = this,
-            DataContext = RootLayout
-        };
         InitializeComponent();
+        RootLayout.RegisterPropertyChanged(nameof(RootLayout.HasLastPage), UpdateNavigation);
+    }
+
+    private void UpdateNavigation()
+    {
+        Dispatcher.UIThread.Invoke(async () =>
+        {
+            await Task.Delay(TimeSpan.FromMilliseconds(100));
+            if (!RootLayout.HasLastPage) BackPanel.IsVisible = false;
+        });
+        BackPanel.IsVisible = true;
+        ((TranslateTransform)BackPanel.RenderTransform!).X = RootLayout.HasLastPage ? 0 : -40;
+    }
+
+    private void BackButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        RootLayout.BackCommand.Execute(null);
     }
 }
