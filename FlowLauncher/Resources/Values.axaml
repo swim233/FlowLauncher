@@ -3,6 +3,6 @@
         xmlns:sys="clr-namespace:System;assembly=System.Runtime">
 
     <sys:Double x:Key="TopBarHeight">50.0</sys:Double>
-    <SpringEasing x:Key="SpringEasing" Mass="1" Stiffness="100" Damping="15" InitialVelocity="0"/>
+    <SpringEasing x:Key="SpringEasing" Mass="1.15" Stiffness="100" Damping="15" InitialVelocity="0"/>
 
 </ResourceDictionary>

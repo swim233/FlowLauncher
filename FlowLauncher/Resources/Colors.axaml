@@ -2,14 +2,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Color x:Key="FlowAccent">#66CCFF</Color>
+    <Color x:Key="FlowTopBarForeground">#FFF</Color>
 
     <!-- Theme Variants -->
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Light">
-            <Color x:Key="FlowBackground">White</Color>
+            <Color x:Key="FlowBackground">#FFF</Color>
+            <Color x:Key="FlowWindowBackground">#AEEE</Color>
         </ResourceDictionary>
         <ResourceDictionary x:Key="Dark">
-            <Color x:Key="FlowBackground">Black</Color>
+            <Color x:Key="FlowBackground">#444</Color>
+            <Color x:Key="FlowWindowBackground">#E000</Color>
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 

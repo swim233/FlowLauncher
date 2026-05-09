@@ -33,16 +33,12 @@ public sealed partial class WindowsWindow : BaseWindow
         if (RootLayout.HasLastPage)
         {
             ((TranslateTransform)TitlePanel.RenderTransform!).X = 40;
-            TitlePanel.Opacity = 0;
             ((TranslateTransform)BackPanel.RenderTransform!).X = 0;
-            BackPanel.Opacity = 1;
         }
         else
         {
             ((TranslateTransform)BackPanel.RenderTransform!).X = -40;
-            BackPanel.Opacity = 0;
             ((TranslateTransform)TitlePanel.RenderTransform!).X = 0;
-            TitlePanel.Opacity = 1;
         }
     }
 
@@ -54,11 +50,6 @@ public sealed partial class WindowsWindow : BaseWindow
     private void ButtonMinimize_OnClick(object? sender, RoutedEventArgs e)
     {
         WindowState = WindowState.Minimized;
-    }
-
-    private void TitleButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-        RootLayout.ForwardCommand.Execute("main");
     }
 
     private void BackButton_OnClick(object? sender, RoutedEventArgs e)

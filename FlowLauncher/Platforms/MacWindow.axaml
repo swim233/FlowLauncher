@@ -2,9 +2,53 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:FlowLauncher.Views"
+        xmlns:p="clr-namespace:FlowLauncher.Platforms"
+        xmlns:c="clr-namespace:FlowLauncher.Controls"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="FlowLauncher.Platforms.MacWindow"
         Icon="/Assets/logo.ico" Title="Flow Launcher"
         MinWidth="900" MinHeight="540"
         Width="900" Height="540"
-        ExtendClientAreaToDecorationsHint="True"/>
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        ExtendClientAreaToDecorationsHint="True">
+    <Grid x:Name="BackgroundPanel">
+        <views:RootLayout ParentWindow="{Binding RelativeSource={RelativeSource AncestorType=p:BaseWindow}}"
+                DataContext="{Binding RootLayout, RelativeSource={RelativeSource AncestorType=p:BaseWindow}}"/>
+        <Grid VerticalAlignment="Top" Height="{StaticResource TopBarHeight}">
+            <Grid Classes="Nav" x:Name="BackPanel" ColumnDefinitions="100,*,100" ColumnSpacing="10" Margin="8,4"
+                    Opacity="{Binding RootLayout.HasLastPage, Converter={x:Static c:Converters.BooleanToOpacity}}">
+                <Grid.Styles>
+                    <Style Selector="Grid.Nav">
+                        <Setter Property="Transitions">
+                            <Transitions>
+                                <DoubleTransition Property="Opacity" Duration="0:0:.1"/>
+                            </Transitions>
+                        </Setter>
+                    </Style>
+                </Grid.Styles>
+                <Grid.RenderTransform>
+                    <TranslateTransform X="-40" Y="0">
+                        <TranslateTransform.Transitions>
+                            <Transitions>
+                                <DoubleTransition Property="X" Duration="0:0:.4"
+                                        Easing="{StaticResource SpringEasing}"/>
+                            </Transitions>
+                        </TranslateTransform.Transitions>
+                    </TranslateTransform>
+                </Grid.RenderTransform>
+                <!-- ReSharper disable Xaml.PossibleNullReferenceException -->
+                <c:FlowRadioButton Grid.Column="0" Classes="TopBar" VerticalAlignment="Bottom" HorizontalAlignment="Left"
+                        Icon="{StaticResource IconArrowLeft}" Click="BackButton_OnClick"
+                        IsEnabled="{Binding RootLayout.HasLastPage}"
+                        Text="{Binding RootLayout.LastPage.Title}"
+                        ToolTip.Tip="{Binding RootLayout.LastPage.Title}"
+                        FontSize="10" IconWidth="8" Padding="4, 2"/>
+                <!-- ReSharper restore Xaml.PossibleNullReferenceException -->
+                <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Text="{Binding RootLayout.CurrentPage.Title}"
+                        FontSize="16" Foreground="{DynamicResource FlowTopBarForeground}"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

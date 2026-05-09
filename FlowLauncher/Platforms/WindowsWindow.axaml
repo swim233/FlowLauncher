@@ -13,7 +13,12 @@
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaChromeHints="NoChrome"
         Background="{x:Null}">
-    <Grid x:Name="BackgroundPanel" Margin="8" RenderTransform="scale(0.7)" Opacity="0">
+    <Window.Resources>
+        <Thickness x:Key="WindowMargin">8</Thickness>
+        <CornerRadius x:Key="WindowCornerRadius">8</CornerRadius>
+    </Window.Resources>
+    <Grid x:Name="BackgroundPanel" Margin="{DynamicResource WindowMargin}"
+            RenderTransform="scale(0.7)" Opacity="0">
         <Grid.Transitions>
             <Transitions>
                 <TransformOperationsTransition Property="RenderTransform"
@@ -21,12 +26,10 @@
                 <DoubleTransition Property="Opacity" Duration="0:0:.5"/>
             </Transitions>
         </Grid.Transitions>
-        <Grid.Resources>
-            <CornerRadius x:Key="CornerRadius">8</CornerRadius>
-        </Grid.Resources>
-        <Border CornerRadius="{StaticResource CornerRadius}"
-                Background="Transparent" BoxShadow="0 0 12 -2 Black"/>
-        <Border CornerRadius="{StaticResource CornerRadius}"
+        <Border CornerRadius="{DynamicResource WindowCornerRadius}"
+                Background="{DynamicResource FlowWindowBackground}"
+                BoxShadow="0 0 12 -2 Black"/>
+        <Border CornerRadius="{DynamicResource WindowCornerRadius}"
                 ClipToBounds="True">
             <Grid>
                 <v:RootLayout ParentWindow="{Binding RelativeSource={RelativeSource AncestorType=p:BaseWindow}}"
@@ -42,7 +45,9 @@
                             </Setter>
                         </Style>
                     </Grid.Styles>
-                    <Grid Grid.Column="1" Classes="Nav" x:Name="BackPanel" Opacity="0">
+                    <Grid Grid.Column="1" Classes="Nav" x:Name="BackPanel" IsVisible="False"
+                            ColumnDefinitions="Auto,Auto,*" ColumnSpacing="10"
+                            Opacity="{Binding RootLayout.HasLastPage, Converter={x:Static c:Converters.BooleanToOpacity}}">
                         <Grid.RenderTransform>
                             <TranslateTransform X="-40" Y="0">
                                 <TranslateTransform.Transitions><Transitions>
@@ -51,11 +56,16 @@
                                 </Transitions></TranslateTransform.Transitions>
                             </TranslateTransform>
                         </Grid.RenderTransform>
-                        <c:FlowRadioButton Classes="TopBar IconOnly" Icon="{StaticResource IconArrowLeft}"
-                                Click="BackButton_OnClick" IsEnabled="{Binding RootLayout.HasLastPage}"
-                                HorizontalAlignment="Left"/>
+                        <!-- ReSharper disable once Xaml.PossibleNullReferenceException -->
+                        <c:FlowRadioButton Grid.Column="0" Classes="TopBar IconOnly"
+                                Icon="{StaticResource IconArrowLeft}" Click="BackButton_OnClick"
+                                IsEnabled="{Binding RootLayout.HasLastPage}"
+                                ToolTip.Tip="{Binding RootLayout.LastPage.Title}"/>
+                        <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                                Text="{Binding RootLayout.CurrentPage.Title}" FontSize="16"/>
                     </Grid>
-                    <Grid Grid.Column="1" Classes="Nav" x:Name="TitlePanel" Opacity="1">
+                    <Grid Grid.Column="1" Classes="Nav" x:Name="TitlePanel" IsVisible="True"
+                            Opacity="{Binding !RootLayout.HasLastPage, Converter={x:Static c:Converters.BooleanToOpacity}}">
                         <Grid.RenderTransform>
                             <TranslateTransform X="0" Y="0">
                                 <TranslateTransform.Transitions><Transitions>
@@ -65,10 +75,9 @@
                             </TranslateTransform>
                         </Grid.RenderTransform>
                         <c:FlowRadioButton Classes="TopBar" Text="Flow Launcher"
-                                IsChecked="True" Click="TitleButton_OnClick"
+                                IsChecked="True" IsEnabled="False"
                                 PressingForeground="Black" Background="#BFFF"
-                                FontSize="14" FontWeight="Medium"
-                                IsEnabled="{Binding !RootLayout.HasLastPage}"/>
+                                FontSize="14" FontWeight="Medium"/>
                     </Grid>
                     <c:FlowRadioButton Grid.Column="3" Classes="TopBar IconOnly"
                             Click="ButtonMinimize_OnClick" Icon="{StaticResource IconMinimize}"/>

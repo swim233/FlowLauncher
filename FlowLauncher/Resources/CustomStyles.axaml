@@ -3,9 +3,9 @@
         xmlns:c="clr-namespace:FlowLauncher.Controls">
 
     <Style Selector="c|FlowRadioButton.TopBar">
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="{DynamicResource FlowTopBarForeground}"/>
         <Setter Property="PressingForeground" Value="{DynamicResource FlowAccent}"/>
-        <Setter Property="Background" Value="White"/>
+        <Setter Property="Background" Value="{DynamicResource FlowTopBarForeground}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
