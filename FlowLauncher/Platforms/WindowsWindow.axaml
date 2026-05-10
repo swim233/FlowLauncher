@@ -10,10 +10,10 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         WindowStartupLocation="CenterScreen"
         SystemDecorations="BorderOnly"
+        ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaChromeHints="NoChrome"
-        UseNativeWindowFrame="False"
         Background="{x:Null}">
-    <Grid x:Name="BackgroundPanel" Margin="{DynamicResource WindowMargin}"
+    <Grid x:Name="RootPanel" Margin="{DynamicResource WindowMargin}"
             RenderTransform="scale(0.7)" Opacity="0">
         <Grid.Transitions>
             <Transitions>

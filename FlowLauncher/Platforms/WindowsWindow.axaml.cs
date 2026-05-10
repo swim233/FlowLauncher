@@ -27,8 +27,8 @@ public sealed partial class WindowsWindow : BaseWindow
 
     private void UpdateWindowStartupAnimationProps()
     {
-        BackgroundPanel.RenderTransform = new ScaleTransform(1.0, 1.0);
-        BackgroundPanel.Opacity = 1;
+        RootPanel.RenderTransform = new ScaleTransform(1.0, 1.0);
+        RootPanel.Opacity = 1;
     }
 
     private void UpdateNativeWindowFrameProps(bool useNativeWindowFrame)
@@ -37,22 +37,23 @@ public sealed partial class WindowsWindow : BaseWindow
         {
             Resources["WindowMargin"] = default(Thickness);
             Resources["WindowCornerRadius"] = default(CornerRadius);
-            TransparencyLevelHint = [
-                WindowTransparencyLevel.Mica,
-                WindowTransparencyLevel.AcrylicBlur,
-                WindowTransparencyLevel.Blur,
-                WindowTransparencyLevel.Transparent
-            ];
-            ExtendClientAreaToDecorationsHint = false;
+            if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000))
+            {
+                TransparencyLevelHint = [WindowTransparencyLevel.Mica, WindowTransparencyLevel.Transparent];
+                Resources["FlowWindowBackground"] = Colors.Transparent;
+            }
+            else
+            {
+                TransparencyLevelHint = [WindowTransparencyLevel.AcrylicBlur, WindowTransparencyLevel.Transparent];
+                Resources.Remove("FlowWindowBackground");
+            }
         }
         else
         {
             Resources["WindowMargin"] = new Thickness(8);
             Resources["WindowCornerRadius"] = new CornerRadius(8);
-            TransparencyLevelHint = [
-                WindowTransparencyLevel.Transparent
-            ];
-            ExtendClientAreaToDecorationsHint = true;
+            TransparencyLevelHint = [WindowTransparencyLevel.Transparent];
+            Resources.Remove("FlowWindowBackground");
         }
     }
 
