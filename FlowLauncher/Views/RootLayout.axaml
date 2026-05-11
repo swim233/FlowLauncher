@@ -44,8 +44,8 @@
                 <Border Background="Transparent" IsVisible="{Binding HasLastPage}"/>
             </Grid>
             <!-- left menu -->
-            <Grid DockPanel.Dock="Left" DataContext="{Binding CurrentPage}">
-                <StackPanel Orientation="Horizontal">
+            <Grid DockPanel.Dock="Left" DataContext="{Binding CurrentPage}" ColumnDefinitions="Auto,5">
+                <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
                     <Border Background="{DynamicResource FlowBackground}" Opacity=".7"
                             Width="{Binding Bounds.Width, ElementName=LeftPanel}">
                         <Border.Transitions><Transitions>
@@ -64,7 +64,7 @@
                         </Border.Background>
                     </Border>
                 </StackPanel>
-                <StackPanel x:Name="LeftPanel" Orientation="Vertical" HorizontalAlignment="Left">
+                <StackPanel Grid.Column="0" x:Name="LeftPanel" Orientation="Vertical" HorizontalAlignment="Left">
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
                             IsVisible="{Binding !!LeftMenuItems.Count}">
                         <ItemsControl ItemsSource="{Binding LeftMenuItems}">

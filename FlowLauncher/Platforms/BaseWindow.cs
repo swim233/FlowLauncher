@@ -6,7 +6,7 @@ namespace FlowLauncher.Platforms;
 
 public class BaseWindow : Window
 {
-    public RootLayoutViewModel RootLayout { get; } = new();
+    public static RootLayoutViewModel RootLayout { get; } = new();
 
     protected override void OnClosed(EventArgs e)
     {

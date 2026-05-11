@@ -5,8 +5,13 @@
         xmlns:vm="clr-namespace:FlowLauncher.ViewModels"
         xmlns:c="clr-namespace:FlowLauncher.Controls"
         xmlns:r="clr-namespace:FlowLauncher.Resources"
+        xmlns:p="clr-namespace:FlowLauncher.Platforms"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="FlowLauncher.Views.MainPage"
         x:DataType="vm:MainPageViewModel">
-    <Button/>
+    <Grid>
+        <c:FlowRadioButton Text="Forward Test" HorizontalAlignment="Center" VerticalAlignment="Center"
+                Command="{Binding ForwardCommand, Source={x:Static p:BaseWindow.RootLayout}}"
+                CommandParameter="tools"/>
+    </Grid>
 </UserControl>
