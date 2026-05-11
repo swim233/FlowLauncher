@@ -1,5 +1,7 @@
-﻿namespace FlowLauncher.ViewModels;
+﻿using FlowLauncher.Resources;
 
-public partial class ToolsPageViewModel() : PageViewModel("tools", "工具")
+namespace FlowLauncher.ViewModels;
+
+public partial class ToolsPageViewModel() : PageViewModel("tools", Strings.PageTitleTools)
 {
 }

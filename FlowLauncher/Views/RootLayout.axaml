@@ -4,7 +4,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:FlowLauncher.ViewModels"
         xmlns:c="clr-namespace:FlowLauncher.Controls"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:r="clr-namespace:FlowLauncher.Resources"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="540"
         x:Class="FlowLauncher.Views.RootLayout"
         x:DataType="vm:RootLayoutViewModel">
     <DockPanel>
@@ -12,7 +13,7 @@
         <Grid DockPanel.Dock="Top" Height="{StaticResource TopBarHeight}"
                 Background="{DynamicResource FlowAccent}" PointerPressed="TopBar_OnPointerPressed">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10"
-                    Opacity="{Binding !HasLastPage, Converter={x:Static c:Converters.BooleanToOpacity}}">
+                    Opacity="{Binding !HasLastPage, Converter={x:Static c:Converters.BoolToOpacity}}">
                 <StackPanel.Transitions>
                     <Transitions>
                         <DoubleTransition Property="Opacity" Duration="0:0:.1"/>
@@ -22,20 +23,22 @@
                     <Style Selector="c|FlowRadioButton">
                         <Setter Property="IsChecked">
                             <MultiBinding Converter="{x:Static c:Converters.AllEqual}">
-                                <MultiBinding.Bindings>
-                                    <Binding Path="CurrentPage.Id"/>
-                                    <Binding RelativeSource="{RelativeSource Self}" Path="Tag"/>
-                                </MultiBinding.Bindings>
+                                <Binding Path="CurrentPage.Id"/>
+                                <Binding RelativeSource="{RelativeSource Self}" Path="Tag"/>
                             </MultiBinding>
                         </Setter>
                         <Setter Property="Command" Value="{Binding NavigateCommand}"/>
                         <Setter Property="CommandParameter" Value="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
                     </Style>
                 </StackPanel.Styles>
-                <c:FlowRadioButton Classes="TopBar" Icon="{StaticResource IconPlay}" Text="主页" Tag="main"/>
-                <c:FlowRadioButton Classes="TopBar" Icon="{StaticResource IconDownload}" Text="安装" Tag="install"/>
-                <c:FlowRadioButton Classes="TopBar" Icon="{StaticResource IconTools}" Text="工具" Tag="tools"/>
-                <c:FlowRadioButton Classes="TopBar" Icon="{StaticResource IconSettings}" Text="设置" Tag="settings"/>
+                <c:FlowRadioButton Classes="TopBar" Icon="{StaticResource IconPlay}"
+                        Text="{x:Static r:Strings.PageTitleMain}" Tag="main"/>
+                <c:FlowRadioButton Classes="TopBar" Icon="{StaticResource IconDownload}"
+                        Text="{x:Static r:Strings.PageTitleInstall}" Tag="install"/>
+                <c:FlowRadioButton Classes="TopBar" Icon="{StaticResource IconTools}"
+                        Text="{x:Static r:Strings.PageTitleTools}" Tag="tools"/>
+                <c:FlowRadioButton Classes="TopBar" Icon="{StaticResource IconSettings}"
+                        Text="{x:Static r:Strings.PageTitleSettings}" Tag="settings"/>
             </StackPanel>
             <Border Background="Transparent" IsVisible="{Binding HasLastPage}"/>
         </Grid>

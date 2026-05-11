@@ -1,13 +1,11 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:FlowLauncher.Views"
         xmlns:p="clr-namespace:FlowLauncher.Platforms"
         xmlns:c="clr-namespace:FlowLauncher.Controls"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:r="clr-namespace:FlowLauncher.Resources"
         x:Class="FlowLauncher.Platforms.MacWindow"
-        Icon="/Assets/logo.ico" Title="Flow Launcher"
+        Icon="/Assets/logo.ico" Title="{x:Static r:Strings.AppTitle}"
         MinWidth="900" MinHeight="540"
         Width="900" Height="540"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
@@ -17,7 +15,7 @@
                 DataContext="{Binding RootLayout, RelativeSource={RelativeSource AncestorType=p:BaseWindow}}"/>
         <Grid VerticalAlignment="Top" Height="{StaticResource TopBarHeight}">
             <Grid Classes="Nav" x:Name="BackPanel" ColumnDefinitions="100,*,100" ColumnSpacing="10" Margin="8,4"
-                    Opacity="{Binding RootLayout.HasLastPage, Converter={x:Static c:Converters.BooleanToOpacity}}">
+                    Opacity="{Binding RootLayout.HasLastPage, Converter={x:Static c:Converters.BoolToOpacity}}">
                 <Grid.Styles>
                     <Style Selector="Grid.Nav">
                         <Setter Property="Transitions">
