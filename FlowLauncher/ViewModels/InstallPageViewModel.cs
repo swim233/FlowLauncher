@@ -1,5 +1,7 @@
-﻿namespace FlowLauncher.ViewModels;
+﻿using FlowLauncher.Resources;
 
-public partial class InstallPageViewModel() : PageViewModel("install", "安装")
+namespace FlowLauncher.ViewModels;
+
+public partial class InstallPageViewModel() : PageViewModel("install", Strings.PageTitleInstall)
 {
 }

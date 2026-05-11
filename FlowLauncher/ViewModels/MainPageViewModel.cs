@@ -1,5 +1,7 @@
-﻿namespace FlowLauncher.ViewModels;
+﻿using FlowLauncher.Resources;
 
-public partial class MainPageViewModel() : PageViewModel("main", "主页")
+namespace FlowLauncher.ViewModels;
+
+public partial class MainPageViewModel() : PageViewModel("main", Strings.PageTitleMain)
 {
 }

@@ -1,5 +1,7 @@
-﻿namespace FlowLauncher.ViewModels;
+﻿using FlowLauncher.Resources;
 
-public partial class SettingsPageViewModel() : PageViewModel("settings", "设置")
+namespace FlowLauncher.ViewModels;
+
+public partial class SettingsPageViewModel() : PageViewModel("settings", Strings.PageTitleSettings)
 {
 }
