@@ -24,7 +24,7 @@
         </Grid.Transitions>
         <Border CornerRadius="{DynamicResource WindowCornerRadius}"
                 IsVisible="{Binding !UseNativeWindowFrame}"
-                BoxShadow="0 0 12 -2 Black"/>
+                BoxShadow="{StaticResource Shadow}"/>
         <Border CornerRadius="{DynamicResource WindowCornerRadius}"
                 Background="{DynamicResource FlowWindowBackground}"
                 ClipToBounds="True">

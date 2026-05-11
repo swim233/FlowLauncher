@@ -10,19 +10,22 @@ public partial class MainPageViewModel : PageViewModel
         LeftMenuItems = [
             new MenuTitleViewModel
             {
-                Title = "title"
+                Title = "Title"
             },
             new MenuItemViewModel
             {
-                Title = "123"
+                Title = "123",
+                Icon = GetIcon("IconSettings")
             },
             new MenuItemViewModel
             {
-                Title = "456"
+                Title = "456",
+                Icon = GetIcon("IconSettings")
             },
             new MenuItemViewModel
             {
-                Title = "789"
+                Title = "789",
+                Icon = GetIcon("IconSettings")
             },
         ];
         Content = new MainPage { DataContext = this };

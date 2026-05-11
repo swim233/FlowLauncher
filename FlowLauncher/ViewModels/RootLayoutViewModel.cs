@@ -4,7 +4,7 @@ namespace FlowLauncher.ViewModels;
 
 public partial class RootLayoutViewModel : ViewModelBase
 {
-    private static readonly Dictionary<string, PageViewModel> _NavigateMap = new()
+    private readonly Dictionary<string, PageViewModel> _NavigateMap = new()
     {
         ["main"] = new MainPageViewModel(),
         ["install"] = new InstallPageViewModel(),
@@ -12,7 +12,7 @@ public partial class RootLayoutViewModel : ViewModelBase
         ["settings"] = new SettingsPageViewModel(),
     };
 
-    public static void RegisterPage(PageViewModel page)
+    public void RegisterPage(PageViewModel page)
     {
         _NavigateMap[page.Id] = page;
     }
@@ -49,7 +49,12 @@ public partial class RootLayoutViewModel : ViewModelBase
             if (field == value) return;
             SetProperty(ref field, value);
         }
-    } = _NavigateMap["main"];
+    }
+
+    public RootLayoutViewModel()
+    {
+        CurrentPage = _NavigateMap["main"];
+    }
 
     private void _Navigate(string pageId, bool forward)
     {

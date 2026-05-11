@@ -52,7 +52,8 @@
                             <TextBlock Grid.Column="1" Text="{TemplateBinding Text}"
                                     IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                                     Foreground="{TemplateBinding Foreground}"
-                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    HorizontalAlignment="{TemplateBinding TextAlignment}"
+                                    VerticalAlignment="Center"
                                     Transitions="{StaticResource Transitions}"
                                     FontSize="{TemplateBinding FontSize}"
                                     FontWeight="{TemplateBinding FontWeight}"
@@ -65,7 +66,7 @@
                 </Border>
             </ControlTemplate>
         </Setter>
-        <Setter Property="Foreground" Value="{DynamicResource TextControlForeground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource FlowTextPrimary}"/>
         <Setter Property="PressingForeground" Value="{DynamicResource FlowBackground}"/>
         <Setter Property="Background" Value="{DynamicResource FlowAccent}"/>
         <Setter Property="Padding" Value="12,6"/>
@@ -82,12 +83,13 @@
     </Style>
 
     <Style Selector="c|FlowRadioButton.MenuItem">
-        <Setter Property="Padding" Value="6"/>
         <Setter Property="CornerRadius" Value="0"/>
-        <Setter Property="PressingBackgroundOpacity" Value=".45"/>
-        <Setter Property="PressingForeground" Value="{DynamicResource FlowTextForeground}"/>
+        <Setter Property="PointerOverBackgroundOpacity" Value=".15"/>
+        <Setter Property="PressingBackgroundOpacity" Value=".3"/>
+        <Setter Property="PressingForeground" Value="{DynamicResource FlowAccent}"/>
         <Setter Property="MinHeight" Value="30"/>
         <Setter Property="MinWidth" Value="100"/>
+        <Setter Property="TextAlignment" Value="Left"/>
     </Style>
 
 </Styles>

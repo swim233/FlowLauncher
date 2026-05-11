@@ -111,7 +111,7 @@ static partial class Program
     }
 
     [Flow.Task("func:exit")] [Flow.Run(After = "app:exit")]
-    private static async Task EndProgram()
+    private static async Task EndProgramAsync()
     {
         Console.WriteLine("Exiting...");
         OnProgramEnd.Set();

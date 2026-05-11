@@ -46,10 +46,10 @@
             <!-- left menu -->
             <Grid DockPanel.Dock="Left" DataContext="{Binding CurrentPage}">
                 <StackPanel Orientation="Horizontal">
-                    <Border Background="{DynamicResource FlowBackground}" Opacity=".8"
+                    <Border Background="{DynamicResource FlowBackground}" Opacity=".7"
                             Width="{Binding Bounds.Width, ElementName=LeftPanel}">
                         <Border.Transitions><Transitions>
-                            <DoubleTransition Property="Width" Duration="0:0:.2" Easing="CubicEaseInOut"/>
+                            <DoubleTransition Property="Width" Duration="0:0:.1" Easing="CubicEaseOut"/>
                         </Transitions></Border.Transitions>
                     </Border>
                     <Border Width="5" Opacity="{Binding !!LeftMenuItems.Count, Converter={x:Static c:Converters.BoolToOpacity}}">
@@ -57,9 +57,9 @@
                             <DoubleTransition Property="Opacity" Duration="0:0:.1"/>
                         </Transitions></Border.Transitions>
                         <Border.Background>
-                            <LinearGradientBrush StartPoint="-80%,0%" EndPoint="100%,0%">
-                                <GradientStop Color="Black" Offset="0"/>
-                                <GradientStop Color="Transparent" Offset="1"/>
+                            <LinearGradientBrush StartPoint="-200%,0%" EndPoint="70%,0%">
+                                <GradientStop Color="#F000" Offset="0"/>
+                                <GradientStop Color="#0000" Offset="1"/>
                             </LinearGradientBrush>
                         </Border.Background>
                     </Border>
@@ -71,12 +71,14 @@
                             <ItemsControl.ItemTemplate><DataTemplate>
                                 <ContentControl Content="{Binding}"><ContentControl.DataTemplates>
                                     <DataTemplate DataType="vm:MenuTitleViewModel">
-                                        <TextBlock Text="{Binding Title}"/>
+                                        <TextBlock Text="{Binding Title}" FontSize="14" Margin="12,15,10,5"
+                                                Foreground="{DynamicResource FlowTextSecondary}"/>
                                     </DataTemplate>
                                     <DataTemplate DataType="vm:MenuItemViewModel">
                                         <Grid>
                                             <PathIcon HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                            <c:FlowRadioButton Classes="MenuItem" Text="{Binding Title}" ToolTip.Tip="{Binding ToolTip}"
+                                            <c:FlowRadioButton Classes="MenuItem" MinHeight="36" Icon="{Binding Icon}"
+                                                    Text="{Binding Title}" ToolTip.Tip="{Binding ToolTip}"
                                                     Command="{Binding Command}" CommandParameter="{Binding CommandParameter}"/>
                                         </Grid>
                                     </DataTemplate>

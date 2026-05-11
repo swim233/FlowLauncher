@@ -4,5 +4,6 @@
 
     <sys:Double x:Key="TopBarHeight">50.0</sys:Double>
     <SpringEasing x:Key="SpringEasing" Mass="1.15" Stiffness="100" Damping="15" InitialVelocity="0"/>
+    <BoxShadows x:Key="Shadow">0 0 12 -2 Black</BoxShadows>
 
 </ResourceDictionary>

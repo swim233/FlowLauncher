@@ -5,6 +5,7 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Media;
 
 namespace FlowLauncher.Controls;
@@ -82,6 +83,15 @@ public class FlowRadioButton : TemplatedControl
     {
         get => GetValue(PointerOverBackgroundOpacityProperty);
         set => SetValue(PointerOverBackgroundOpacityProperty, value);
+    }
+
+    public static readonly StyledProperty<HorizontalAlignment> TextAlignmentProperty =
+        AvaloniaProperty.Register<FlowRadioButton, HorizontalAlignment>(nameof(TextAlignment), HorizontalAlignment.Center);
+
+    public HorizontalAlignment TextAlignment
+    {
+        get => GetValue(TextAlignmentProperty);
+        set => SetValue(TextAlignmentProperty, value);
     }
 
     public static readonly StyledProperty<ICommand?> CommandProperty =
