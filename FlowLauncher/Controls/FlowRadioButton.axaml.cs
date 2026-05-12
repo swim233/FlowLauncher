@@ -5,6 +5,7 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Media;
 
 namespace FlowLauncher.Controls;
@@ -64,6 +65,42 @@ public class FlowRadioButton : TemplatedControl
     {
         get => GetValue(IsCheckedProperty);
         set => SetValue(IsCheckedProperty, value);
+    }
+
+    public static readonly StyledProperty<double> PressingBackgroundOpacityProperty =
+        AvaloniaProperty.Register<FlowRadioButton, double>(nameof(PressingBackgroundOpacity), 1);
+
+    public double PressingBackgroundOpacity
+    {
+        get => GetValue(PressingBackgroundOpacityProperty);
+        set => SetValue(PressingBackgroundOpacityProperty, value);
+    }
+
+    public static readonly StyledProperty<double> PointerOverBackgroundOpacityProperty =
+        AvaloniaProperty.Register<FlowRadioButton, double>(nameof(PointerOverBackgroundOpacity), .3);
+
+    public double PointerOverBackgroundOpacity
+    {
+        get => GetValue(PointerOverBackgroundOpacityProperty);
+        set => SetValue(PointerOverBackgroundOpacityProperty, value);
+    }
+
+    public static readonly StyledProperty<double> BackgroundOpacityProperty =
+        AvaloniaProperty.Register<FlowRadioButton, double>(nameof(BackgroundOpacity), .1);
+
+    public double BackgroundOpacity
+    {
+        get => GetValue(BackgroundOpacityProperty);
+        set => SetValue(BackgroundOpacityProperty, value);
+    }
+
+    public static readonly StyledProperty<HorizontalAlignment> TextAlignmentProperty =
+        AvaloniaProperty.Register<FlowRadioButton, HorizontalAlignment>(nameof(TextAlignment), HorizontalAlignment.Center);
+
+    public HorizontalAlignment TextAlignment
+    {
+        get => GetValue(TextAlignmentProperty);
+        set => SetValue(TextAlignmentProperty, value);
     }
 
     public static readonly StyledProperty<ICommand?> CommandProperty =

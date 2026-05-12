@@ -7,11 +7,15 @@
     <!-- Theme Variants -->
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Light">
+            <Color x:Key="FlowTextPrimary">#111</Color>
+            <Color x:Key="FlowTextSecondary">#444</Color>
             <Color x:Key="FlowBackground">#FFF</Color>
             <Color x:Key="FlowWindowBackground">#AEEE</Color>
         </ResourceDictionary>
         <ResourceDictionary x:Key="Dark">
-            <Color x:Key="FlowBackground">#444</Color>
+            <Color x:Key="FlowTextPrimary">#eee</Color>
+            <Color x:Key="FlowTextSecondary">#889</Color>
+            <Color x:Key="FlowBackground">#222</Color>
             <Color x:Key="FlowWindowBackground">#E000</Color>
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>

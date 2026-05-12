@@ -10,7 +10,6 @@
         Width="900" Height="540"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         WindowStartupLocation="CenterScreen"
-        SystemDecorations="BorderOnly"
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaChromeHints="NoChrome"
         Background="{x:Null}">
@@ -25,7 +24,7 @@
         </Grid.Transitions>
         <Border CornerRadius="{DynamicResource WindowCornerRadius}"
                 IsVisible="{Binding !UseNativeWindowFrame}"
-                BoxShadow="0 0 12 -2 Black"/>
+                BoxShadow="{StaticResource Shadow}"/>
         <Border CornerRadius="{DynamicResource WindowCornerRadius}"
                 Background="{DynamicResource FlowWindowBackground}"
                 ClipToBounds="True">
