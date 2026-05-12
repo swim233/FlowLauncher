@@ -44,10 +44,10 @@
                 <Border Background="Transparent" IsVisible="{Binding HasLastPage}"/>
             </Grid>
             <!-- left menu -->
-            <Grid DockPanel.Dock="Left" DataContext="{Binding CurrentPage}" ColumnDefinitions="Auto,5">
+            <Grid DockPanel.Dock="Left" x:Name="LeftMenu" DataContext="{Binding CurrentPage}" ColumnDefinitions="Auto,5">
                 <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
                     <Border Background="{DynamicResource FlowBackground}" Opacity=".7"
-                            Width="{Binding Bounds.Width, ElementName=LeftPanel}">
+                            Width="{Binding Bounds.Width, ElementName=LeftMenuPanel}">
                         <Border.Transitions><Transitions>
                             <DoubleTransition Property="Width" Duration="0:0:.1" Easing="CubicEaseOut"/>
                         </Transitions></Border.Transitions>
@@ -64,7 +64,7 @@
                         </Border.Background>
                     </Border>
                 </StackPanel>
-                <StackPanel Grid.Column="0" x:Name="LeftPanel" Orientation="Vertical" HorizontalAlignment="Left">
+                <StackPanel Grid.Column="0" x:Name="LeftMenuPanel" Orientation="Vertical" HorizontalAlignment="Left">
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
                             IsVisible="{Binding !!LeftMenuItems.Count}">
                         <ItemsControl ItemsSource="{Binding LeftMenuItems}">
@@ -79,7 +79,15 @@
                                             <PathIcon HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                             <c:FlowRadioButton Classes="MenuItem" MinHeight="36" Icon="{Binding Icon}"
                                                     Text="{Binding Title}" ToolTip.Tip="{Binding ToolTip}"
-                                                    Command="{Binding Command}" CommandParameter="{Binding CommandParameter}"/>
+                                                    Tag="{Binding TargetContent}" Click="LeftMenuItem_OnClick"
+                                                    Command="{Binding Command}" CommandParameter="{Binding CommandParameter}">
+                                                <c:FlowRadioButton.IsChecked>
+                                                    <MultiBinding Converter="{x:Static c:Converters.AllEqual}">
+                                                        <Binding Path="TargetContent"/>
+                                                        <Binding Path="DataContext.Content" ElementName="LeftMenu" FallbackValue="{x:Null}"/>
+                                                    </MultiBinding>
+                                                </c:FlowRadioButton.IsChecked>
+                                            </c:FlowRadioButton>
                                         </Grid>
                                     </DataTemplate>
                                 </ContentControl.DataTemplates></ContentControl>
