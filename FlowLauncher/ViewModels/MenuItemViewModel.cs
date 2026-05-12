@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using Avalonia.Controls;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -12,4 +13,5 @@ public partial class MenuItemViewModel : ViewModelBase
     [ObservableProperty] private string? _toolTip = null;
     [ObservableProperty] private ICommand? _command = null;
     [ObservableProperty] private object? _commandParameter = null;
+    [ObservableProperty] private Control? _targetContent = null;
 }

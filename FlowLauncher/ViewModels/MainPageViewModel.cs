@@ -7,6 +7,7 @@ public partial class MainPageViewModel : PageViewModel
 {
     public MainPageViewModel() : base("main", Strings.PageTitleMain)
     {
+        Content = new MainPage { DataContext = this };
         LeftMenuItems = [
             new MenuTitleViewModel
             {
@@ -14,20 +15,20 @@ public partial class MainPageViewModel : PageViewModel
             },
             new MenuItemViewModel
             {
-                Title = "123",
-                Icon = GetIcon("IconSettings")
+                Title = "Main",
+                Icon = Icon("IconSettings"),
+                TargetContent = Content
             },
             new MenuItemViewModel
             {
                 Title = "456",
-                Icon = GetIcon("IconSettings")
+                Icon = Icon("IconSettings")
             },
             new MenuItemViewModel
             {
                 Title = "789",
-                Icon = GetIcon("IconSettings")
+                Icon = Icon("IconSettings")
             },
         ];
-        Content = new MainPage { DataContext = this };
     }
 }

@@ -11,7 +11,6 @@
         x:DataType="vm:MainPageViewModel">
     <Grid>
         <c:FlowRadioButton Text="Forward Test" HorizontalAlignment="Center" VerticalAlignment="Center"
-                Command="{Binding ForwardCommand, Source={x:Static p:BaseWindow.RootLayout}}"
-                CommandParameter="tools"/>
+                Command="{Binding RootLayout.ForwardCommand}" CommandParameter="tools"/>
     </Grid>
 </UserControl>

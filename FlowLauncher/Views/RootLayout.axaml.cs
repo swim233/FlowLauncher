@@ -1,7 +1,9 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Threading;
+using FlowLauncher.Controls;
 using FlowLauncher.ViewModels;
 
 namespace FlowLauncher.Views;
@@ -49,5 +51,11 @@ public partial class RootLayout : UserControl
     private void TopBar_OnPointerPressed(object? sender, PointerPressedEventArgs e)
     {
         ParentWindow?.BeginMoveDrag(e);
+    }
+
+    private void LeftMenuItem_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is not FlowRadioButton { Tag: Control targetContent }) return;
+        ViewModel.CurrentPage.Content = targetContent;
     }
 }
