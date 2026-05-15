@@ -30,3 +30,12 @@ public abstract partial class PageViewModel(string id, string title = "Untitled"
         return value as Geometry;
     }
 }
+
+public abstract class PageViewModel<TPageControl> : PageViewModel
+    where TPageControl : Control, new()
+{
+    protected PageViewModel(string id, string title = "Untitled") : base(id, title)
+    {
+        Content = new TPageControl { DataContext = this };
+    }
+}

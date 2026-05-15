@@ -1,8 +1,12 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.LogicalTree;
+using Avalonia.Media;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 using FlowLauncher.Controls;
 using FlowLauncher.ViewModels;
 
@@ -43,10 +47,27 @@ public partial class RootLayout : UserControl
         }
     }
 
-    private void OnPageChanged() => Dispatcher.UIThread.Invoke(async () =>
+    protected override void OnLoaded(RoutedEventArgs e)
     {
-        // TODO
-    });
+        base.OnLoaded(e);
+        OnPageChanged();
+    }
+
+    private void OnPageChanged()
+    {
+        Dispatcher.UIThread.Invoke(async () =>
+        {
+            var controlItems = LeftMenuItemsControl.ItemsPanelRoot?.Children;
+            if (controlItems == null || controlItems.Count == 0) return;
+            foreach (var item in controlItems)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(.05));
+                if (item is not ContentPresenter { Child: { RenderTransform: TranslateTransform transform } control }) break;
+                transform.X = 0;
+                control.Opacity = 1;
+            }
+        });
+    }
 
     private void TopBar_OnPointerPressed(object? sender, PointerPressedEventArgs e)
     {

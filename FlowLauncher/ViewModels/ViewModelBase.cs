@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace FlowLauncher.ViewModels;
@@ -18,17 +19,29 @@ public abstract class ViewModelBase : ObservableObject
         (_changedObservers ??= [])[propertyName] = action;
     }
 
+    public void ActivatePropertyChanging(string propertyName)
+    {
+        if (_changingObservers == null) return;
+        if (_changingObservers.TryGetValue(propertyName, out var action)) action();
+    }
+
+    public void ActivatePropertyChanged(string propertyName)
+    {
+        if (_changedObservers == null) return;
+        if (_changedObservers.TryGetValue(propertyName, out var action)) action();
+    }
+
     protected override void OnPropertyChanging(PropertyChangingEventArgs e)
     {
         base.OnPropertyChanging(e);
-        if (_changingObservers == null || e.PropertyName == null) return;
-        if (_changingObservers.TryGetValue(e.PropertyName, out var action)) action();
+        if (e.PropertyName == null) return;
+        ActivatePropertyChanging(e.PropertyName);
     }
 
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
-        if (_changedObservers == null || e.PropertyName == null) return;
-        if (_changedObservers.TryGetValue(e.PropertyName, out var action)) action();
+        if ( e.PropertyName == null) return;
+        ActivatePropertyChanged(e.PropertyName);
     }
 }

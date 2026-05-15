@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using Avalonia.Threading;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace FlowLauncher.ViewModels;
 
@@ -12,32 +14,15 @@ public partial class RootLayoutViewModel : ViewModelBase
         ["settings"] = new SettingsPageViewModel(),
     };
 
-    public void RegisterPage(PageViewModel page)
-    {
-        _NavigateMap[page.Id] = page;
-    }
+    public void RegisterPage(PageViewModel page) => _NavigateMap[page.Id] = page;
 
     private readonly Stack<PageViewModel> _BackStack = [];
 
-    public PageViewModel? LastPage
-    {
-        get;
-        private set
-        {
-            if (field == value) return;
-            SetProperty(ref field, value);
-        }
-    }
+    [ObservableProperty]
+    public partial PageViewModel? LastPage { get; private set; }
 
-    public bool HasLastPage
-    {
-        get;
-        private set
-        {
-            if (field == value) return;
-            SetProperty(ref field, value);
-        }
-    }
+    [ObservableProperty]
+    public partial bool HasLastPage { get; private set; }
 
     public PageViewModel CurrentPage
     {
@@ -51,23 +36,42 @@ public partial class RootLayoutViewModel : ViewModelBase
         }
     }
 
-    private void _Navigate(string pageId, bool forward)
+    [ObservableProperty] public partial double _LeftMenuControl_Opacity { get; private set; } = 1;
+    [ObservableProperty] public partial double _LeftExtraControl_Scale { get; private set; } = 0;
+    [ObservableProperty] public partial double _LeftExtraControl_Opacity { get; private set; } = 1;
+
+    private void _Navigate(string? pageId, bool forward = true)
     {
-        if (!_NavigateMap.TryGetValue(pageId, out var page)) return;
-        if (forward) _BackStack.Push(CurrentPage);
-        else _BackStack.Clear();
-        CurrentPage = page;
+        PageViewModel? page;
+        if (pageId == null)
+        {
+            if (!_BackStack.TryPop(out page)) return;
+        }
+        else
+        {
+            if (!_NavigateMap.TryGetValue(pageId, out page)) return;
+            if (forward) _BackStack.Push(CurrentPage);
+            else _BackStack.Clear();
+        }
+        Dispatcher.UIThread.Invoke(async () =>
+        {
+            _LeftExtraControl_Scale = .5;
+            _LeftExtraControl_Opacity = 0;
+            _LeftMenuControl_Opacity = 0;
+            await Task.Delay(TimeSpan.FromSeconds(.05));
+            CurrentPage = page;
+            _LeftExtraControl_Scale = 1;
+            _LeftExtraControl_Opacity = 1;
+            _LeftMenuControl_Opacity = 1;
+        });
     }
 
     [RelayCommand]
-    private void Back()
-    {
-        if (_BackStack.TryPop(out var page)) CurrentPage = page;
-    }
+    private void Back() => _Navigate(null);
 
     [RelayCommand]
     private void Navigate(string pageId) => _Navigate(pageId, false);
 
     [RelayCommand]
-    private void Forward(string pageId) => _Navigate(pageId, true);
+    private void Forward(string pageId) => _Navigate(pageId);
 }

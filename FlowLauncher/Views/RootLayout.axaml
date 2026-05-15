@@ -44,7 +44,7 @@
                 <Border Background="Transparent" IsVisible="{Binding HasLastPage}"/>
             </Grid>
             <!-- left menu -->
-            <Grid DockPanel.Dock="Left" x:Name="LeftMenu" DataContext="{Binding CurrentPage}" ColumnDefinitions="Auto,5">
+            <Grid DockPanel.Dock="Left" x:Name="LeftPanel" ColumnDefinitions="Auto,5">
                 <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
                     <Border Background="{DynamicResource FlowBackground}" Opacity=".7"
                             Width="{Binding Bounds.Width, ElementName=LeftMenuPanel}">
@@ -52,7 +52,7 @@
                             <DoubleTransition Property="Width" Duration="0:0:.1" Easing="CubicEaseOut"/>
                         </Transitions></Border.Transitions>
                     </Border>
-                    <Border Width="5" Opacity="{Binding !!LeftMenuItems.Count, Converter={x:Static c:Converters.BoolToOpacity}}">
+                    <Border Width="5" Opacity="{Binding !!CurrentPage.LeftMenuItems.Count, Converter={x:Static c:Converters.BoolToOpacity}}">
                         <Border.Transitions><Transitions>
                             <DoubleTransition Property="Opacity" Duration="0:0:.1"/>
                         </Transitions></Border.Transitions>
@@ -64,41 +64,98 @@
                         </Border.Background>
                     </Border>
                 </StackPanel>
-                <StackPanel Grid.Column="0" x:Name="LeftMenuPanel" Orientation="Vertical" HorizontalAlignment="Left">
+                <StackPanel Grid.Column="0" x:Name="LeftMenuPanel" Orientation="Vertical"
+                        HorizontalAlignment="Left" ClipToBounds="True">
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
-                            IsVisible="{Binding !!LeftMenuItems.Count}">
-                        <ItemsControl ItemsSource="{Binding LeftMenuItems}">
+                            IsVisible="{Binding !!CurrentPage.LeftMenuItems.Count}"
+                            Opacity="{Binding _LeftMenuControl_Opacity}">
+                        <ScrollViewer.Transitions><Transitions>
+                            <DoubleTransition Property="Opacity" Duration="0:0:.05"/>
+                        </Transitions></ScrollViewer.Transitions>
+                        <ItemsControl x:Name="LeftMenuItemsControl" DataContext="{Binding CurrentPage}"
+                                ItemsSource="{Binding LeftMenuItems}">
                             <ItemsControl.ItemTemplate><DataTemplate>
-                                <ContentControl Content="{Binding}"><ContentControl.DataTemplates>
-                                    <DataTemplate DataType="vm:MenuTitleViewModel">
-                                        <TextBlock Text="{Binding Title}" FontSize="14" Margin="12,15,10,5"
-                                                Foreground="{DynamicResource FlowTextSecondary}"/>
-                                    </DataTemplate>
-                                    <DataTemplate DataType="vm:MenuItemViewModel">
-                                        <Grid>
-                                            <PathIcon HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                            <c:FlowRadioButton Classes="MenuItem" MinHeight="36" Icon="{Binding Icon}"
-                                                    Text="{Binding Title}" ToolTip.Tip="{Binding ToolTip}"
-                                                    Tag="{Binding TargetContent}" Click="LeftMenuItem_OnClick"
-                                                    Command="{Binding Command}" CommandParameter="{Binding CommandParameter}">
-                                                <c:FlowRadioButton.IsChecked>
+                                <ContentControl Content="{Binding}" Opacity="0" Margin=".5,0,0,0">
+                                    <ContentControl.DataTemplates>
+                                        <DataTemplate DataType="vm:MenuTitleViewModel">
+                                            <TextBlock Text="{Binding Title}" FontSize="14" Margin="12,15,30,5"
+                                                    Foreground="{DynamicResource FlowTextSecondary}"/>
+                                        </DataTemplate>
+                                        <DataTemplate DataType="vm:MenuItemViewModel">
+                                            <Grid>
+                                                <Grid.Tag>
                                                     <MultiBinding Converter="{x:Static c:Converters.AllEqual}">
                                                         <Binding Path="TargetContent"/>
-                                                        <Binding Path="DataContext.Content" ElementName="LeftMenu" FallbackValue="{x:Null}"/>
+                                                        <Binding Path="DataContext.Content" FallbackValue="{x:Null}" ElementName="LeftMenuItemsControl"/>
                                                     </MultiBinding>
-                                                </c:FlowRadioButton.IsChecked>
-                                            </c:FlowRadioButton>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ContentControl.DataTemplates></ContentControl>
+                                                </Grid.Tag>
+                                                <Grid.Styles>
+                                                    <Style Selector="Grid[Tag=True]">
+                                                        <Style Selector="^ > c|FlowRadioButton">
+                                                            <Setter Property="IsChecked" Value="True"/>
+                                                        </Style>
+                                                        <Style Selector="^ > Decorator > Border">
+                                                            <Setter Property="Height" Value="24"/>
+                                                            <Setter Property="Opacity" Value="1"/>
+                                                        </Style>
+                                                    </Style>
+                                                    <Style Selector="Grid[Tag=False]">
+                                                        <Style Selector="^ > Decorator > Border">
+                                                            <Setter Property="Height" Value="0"/>
+                                                            <Setter Property="Opacity" Value="0"/>
+                                                        </Style>
+                                                    </Style>
+                                                </Grid.Styles>
+                                                <c:FlowRadioButton Classes="MenuItem" Height="36" Icon="{Binding Icon}"
+                                                        Text="{Binding Title}" ToolTip.Tip="{Binding ToolTip}"
+                                                        Tag="{Binding TargetContent}" Click="LeftMenuItem_OnClick"
+                                                        Command="{Binding Command}" CommandParameter="{Binding CommandParameter}"
+                                                        Padding="14,0"/>
+                                                <Decorator Width="8" HorizontalAlignment="Left">
+                                                    <Border HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                            Background="{DynamicResource FlowAccent}"
+                                                            Width="4" CornerRadius="2">
+                                                        <Border.Transitions><Transitions>
+                                                            <DoubleTransition Property="Height" Duration="0:0:.2"
+                                                                    Easing="{StaticResource SpringEasing}"/>
+                                                            <DoubleTransition Property="Opacity" Duration="0:0:.1"/>
+                                                        </Transitions></Border.Transitions>
+                                                    </Border>
+                                                </Decorator>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ContentControl.DataTemplates>
+                                    <ContentControl.RenderTransform>
+                                        <TranslateTransform X="-40" Y="0">
+                                            <TranslateTransform.Transitions><Transitions>
+                                                <DoubleTransition Property="X" Duration="0:0:.25" Easing="{StaticResource SpringEasing}"/>
+                                            </Transitions></TranslateTransform.Transitions>
+                                        </TranslateTransform>
+                                    </ContentControl.RenderTransform>
+                                    <ContentControl.Transitions><Transitions>
+                                        <DoubleTransition Property="Opacity" Duration="0:0:.1"/>
+                                    </Transitions></ContentControl.Transitions>
+                                </ContentControl>
                             </DataTemplate></ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>
-                    <Decorator Child="{Binding LeftExtraContent}"/>
+                    <Decorator Child="{Binding CurrentPage.LeftExtraContent}" Opacity="{Binding _LeftExtraControl_Opacity}">
+                        <Decorator.RenderTransform>
+                            <ScaleTransform ScaleX="{Binding _LeftExtraControl_Scale}">
+                                <ScaleTransform.Transitions><Transitions>
+                                    <DoubleTransition Property="ScaleX" Duration="0:0:.5" Easing="{StaticResource SpringEasing}"/>
+                                    <DoubleTransition Property="ScaleY" Duration="0:0:.5" Easing="{StaticResource SpringEasing}"/>
+                                </Transitions></ScaleTransform.Transitions>
+                            </ScaleTransform>
+                        </Decorator.RenderTransform>
+                        <Decorator.Transitions><Transitions>
+                            <DoubleTransition Property="Opacity" Duration="0:0:.2"/>
+                        </Transitions></Decorator.Transitions>
+                    </Decorator>
                 </StackPanel>
             </Grid>
             <!-- main content -->
-            <Decorator Margin="0,5,5,5" Child="{Binding CurrentPage.Content}"/>
+            <Decorator x:Name="MainContent" Margin="0,5,5,5" Child="{Binding CurrentPage.Content}"/>
         </DockPanel>
     </Grid>
 </UserControl>
