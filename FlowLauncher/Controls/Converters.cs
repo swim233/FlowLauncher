@@ -11,7 +11,7 @@ public static class Converters
         return opacity;
     });
 
-    public static readonly FuncMultiValueConverter<string?, bool> AllEqual = new(static parts =>
+    public static readonly FuncMultiValueConverter<object?, bool> AllEqual = new(static parts =>
     {
         using var it = parts.GetEnumerator();
         if (!it.MoveNext()) return true;

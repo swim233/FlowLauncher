@@ -1,12 +1,13 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.Threading;
 using FlowLauncher.Controls;
-using FlowLauncher.ViewModels;
 
-namespace FlowLauncher.Views;
+namespace FlowLauncher.Components.UI;
 
 public partial class RootLayout : UserControl
 {
@@ -43,10 +44,27 @@ public partial class RootLayout : UserControl
         }
     }
 
-    private void OnPageChanged() => Dispatcher.UIThread.Invoke(async () =>
+    protected override void OnLoaded(RoutedEventArgs e)
     {
-        // TODO
-    });
+        base.OnLoaded(e);
+        OnPageChanged();
+    }
+
+    private void OnPageChanged()
+    {
+        Dispatcher.UIThread.Invoke<Task>(async () =>
+        {
+            var controlItems = LeftMenuItemsControl.ItemsPanelRoot?.Children;
+            if (controlItems == null || controlItems.Count == 0) return;
+            foreach (var item in controlItems)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(.05));
+                if (item is not ContentPresenter { Child: { RenderTransform: TranslateTransform transform } control }) break;
+                transform.X = 0;
+                control.Opacity = 1;
+            }
+        });
+    }
 
     private void TopBar_OnPointerPressed(object? sender, PointerPressedEventArgs e)
     {
@@ -55,7 +73,7 @@ public partial class RootLayout : UserControl
 
     private void LeftMenuItem_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (sender is not FlowRadioButton { Tag: Control targetContent }) return;
-        ViewModel.CurrentPage.Content = targetContent;
+        if (sender is not FlowRadioButton { Tag: PageContentViewModel targetContent }) return;
+        ViewModel.SwitchContentCommand.Execute(targetContent);
     }
 }
