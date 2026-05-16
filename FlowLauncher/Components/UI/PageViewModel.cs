@@ -17,7 +17,7 @@ public abstract partial class PageViewModel(string id, string title = "Untitled"
     [ObservableProperty]
     public partial Collection<MenuItemViewModel> LeftMenuItems { get; set; } = new ObservableCollection<MenuItemViewModel>();
 
-    public PageContent? LeftExtraContent { get; init; } = null;
+    public PageContentView? LeftExtraContent { get; init; } = null;
 
     [ObservableProperty]
     public partial PageContentViewModel? Content { get; set; } = null;
@@ -38,9 +38,9 @@ public abstract partial class PageViewModel(string id, string title = "Untitled"
     }
 
     protected PageContentViewModel PageContent<TPageContent>()
-        where TPageContent : PageContent, new()
+        where TPageContent : PageContentView, new()
     {
-        var view = new TPageContent();
+        var view = PageContentView.GetViewCacheOrCreate<TPageContent>();
         return new PageContentViewModelUsingPageViewModel(view, this);
     }
 }
@@ -56,7 +56,7 @@ public abstract class PageViewModel<TThisClass, TMainContent> : PageViewModel
 }
 
 public abstract class PageViewModel<TMainContent> : PageViewModel
-    where TMainContent : PageContent, new()
+    where TMainContent : PageContentView, new()
 {
     protected PageViewModel(string id, string title = "Untitled") : base(id, title)
     {
@@ -66,9 +66,9 @@ public abstract class PageViewModel<TMainContent> : PageViewModel
 
 file class PageContentViewModelUsingPageViewModel : PageContentViewModel
 {
-    public override PageContent ViewControl { get; }
+    public override PageContentView ViewControl { get; }
 
-    public PageContentViewModelUsingPageViewModel(PageContent view, PageViewModel viewModel)
+    public PageContentViewModelUsingPageViewModel(PageContentView view, PageViewModel viewModel)
     {
         ViewControl = view;
         ViewModel = viewModel;

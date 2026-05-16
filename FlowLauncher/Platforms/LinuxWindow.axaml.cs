@@ -1,4 +1,3 @@
-using FlowLauncher.Views;
 using RootLayout = FlowLauncher.Components.UI.RootLayout;
 
 namespace FlowLauncher.Platforms;
