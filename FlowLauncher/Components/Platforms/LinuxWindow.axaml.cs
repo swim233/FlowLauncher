@@ -1,6 +1,6 @@
 using RootLayout = FlowLauncher.Components.UI.RootLayout;
 
-namespace FlowLauncher.Platforms;
+namespace FlowLauncher.Components.Platforms;
 
 public sealed partial class LinuxWindow : BaseWindow
 {

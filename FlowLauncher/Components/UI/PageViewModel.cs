@@ -2,7 +2,7 @@
 using Avalonia;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
-using FlowLauncher.Platforms;
+using FlowLauncher.Components.Platforms;
 
 namespace FlowLauncher.Components.UI;
 

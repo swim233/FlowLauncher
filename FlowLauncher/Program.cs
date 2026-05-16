@@ -2,7 +2,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Threading;
-using FlowLauncher.Platforms;
+using FlowLauncher.Components.Platforms;
 
 namespace FlowLauncher;
 

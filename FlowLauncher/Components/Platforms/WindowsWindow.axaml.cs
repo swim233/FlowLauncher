@@ -4,7 +4,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Threading;
 
-namespace FlowLauncher.Platforms;
+namespace FlowLauncher.Components.Platforms;
 
 public sealed partial class WindowsWindow : BaseWindow
 {
