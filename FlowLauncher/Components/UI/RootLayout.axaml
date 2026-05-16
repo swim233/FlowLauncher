@@ -5,6 +5,7 @@
         xmlns:c="clr-namespace:FlowLauncher.Controls"
         xmlns:r="clr-namespace:FlowLauncher.Resources"
         xmlns:ui="clr-namespace:FlowLauncher.Components.UI"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="540"
         x:Class="FlowLauncher.Components.UI.RootLayout"
         x:DataType="ui:RootLayoutViewModel">
@@ -46,13 +47,26 @@
             <!-- left menu -->
             <Grid DockPanel.Dock="Left" x:Name="LeftPanel" ColumnDefinitions="Auto,5">
                 <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-                    <Border Background="{DynamicResource FlowBackground}" Opacity=".7"
-                            Width="{Binding Bounds.Width, ElementName=LeftMenuPanel}">
+                    <StackPanel.Tag>
+                        <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                            <Binding Path="!!CurrentPage.LeftMenuItems.Count"/>
+                            <Binding Path="CurrentPagePreview.LeftExtraContent" Converter="{x:Static ObjectConverters.IsNotNull}"/>
+                            <Binding Path="CurrentPage.LeftExtraContent" Converter="{x:Static ObjectConverters.IsNotNull}"/>
+                        </MultiBinding>
+                    </StackPanel.Tag>
+                    <Border Background="{DynamicResource FlowBackground}" Opacity="{DynamicResource PanelOpacity}">
+                        <Border.Width>
+                            <MultiBinding Converter="{x:Static c:Converters.IfBranch}">
+                                <Binding Path="$parent[StackPanel].Tag"/>
+                                <Binding Path="Bounds.Width" ElementName="LeftMenuPanel"/>
+                                <Binding><Binding.Source><sys:Double>0</sys:Double></Binding.Source></Binding>
+                            </MultiBinding>
+                        </Border.Width>
                         <Border.Transitions><Transitions>
                             <DoubleTransition Property="Width" Duration="0:0:.1" Easing="CubicEaseOut"/>
                         </Transitions></Border.Transitions>
                     </Border>
-                    <Border Width="5" Opacity="{Binding !!CurrentPage.LeftMenuItems.Count, Converter={x:Static c:Converters.BoolToOpacity}}">
+                    <Border Width="5" Opacity="{Binding $parent[StackPanel].Tag, Converter={x:Static c:Converters.BoolToOpacity}}">
                         <Border.Transitions><Transitions>
                             <DoubleTransition Property="Opacity" Duration="0:0:.1"/>
                         </Transitions></Border.Transitions>
@@ -64,9 +78,9 @@
                         </Border.Background>
                     </Border>
                 </StackPanel>
-                <StackPanel Grid.Column="0" x:Name="LeftMenuPanel" Orientation="Vertical"
+                <Grid Grid.Column="0" x:Name="LeftMenuPanel" RowDefinitions="Auto,*"
                         HorizontalAlignment="Left" ClipToBounds="True">
-                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                    <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
                             IsVisible="{Binding !!CurrentPage.LeftMenuItems.Count}"
                             Opacity="{Binding _LeftMenuControl_Opacity}">
                         <ScrollViewer.Transitions><Transitions>
@@ -146,12 +160,15 @@
                             </DataTemplate></ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>
-                    <Decorator Child="{Binding CurrentPage.LeftExtraContent}" Opacity="{Binding _LeftExtraControl_Opacity}">
+                    <Decorator Grid.Row="1" Margin="{StaticResource PanelContentMargin}" Opacity="{Binding _LeftExtraControl_Opacity}"
+                            VerticalAlignment="{Binding CurrentPage.LeftExtraContentAlignment}"
+                            IsVisible="{Binding CurrentPage.LeftExtraContent.ViewControl, FallbackValue={x:Null}, Converter={x:Static ObjectConverters.IsNotNull}}"
+                            Child="{Binding CurrentPage.LeftExtraContent.ViewControl, FallbackValue={x:Null}}">
                         <Decorator.RenderTransform>
-                            <ScaleTransform ScaleX="{Binding _LeftExtraControl_Scale}">
+                            <ScaleTransform ScaleX="{Binding _LeftExtraControl_Scale}" ScaleY="{Binding _LeftExtraControl_Scale}">
                                 <ScaleTransform.Transitions><Transitions>
-                                    <DoubleTransition Property="ScaleX" Duration="0:0:.5" Easing="{StaticResource SpringEasing}"/>
-                                    <DoubleTransition Property="ScaleY" Duration="0:0:.5" Easing="{StaticResource SpringEasing}"/>
+                                    <DoubleTransition Property="ScaleX" Duration="0:0:.4" Easing="{StaticResource SpringEasing}"/>
+                                    <DoubleTransition Property="ScaleY" Duration="0:0:.4" Easing="{StaticResource SpringEasing}"/>
                                 </Transitions></ScaleTransform.Transitions>
                             </ScaleTransform>
                         </Decorator.RenderTransform>
@@ -159,7 +176,7 @@
                             <DoubleTransition Property="Opacity" Duration="0:0:.2"/>
                         </Transitions></Decorator.Transitions>
                     </Decorator>
-                </StackPanel>
+                </Grid>
             </Grid>
             <!-- main content -->
             <Border ClipToBounds="True">

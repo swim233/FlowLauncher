@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using Avalonia;
+using Avalonia.Layout;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using FlowLauncher.Components.Platforms;
@@ -17,10 +18,21 @@ public abstract partial class PageViewModel(string id, string title = "Untitled"
     [ObservableProperty]
     public partial Collection<LeftMenuItemViewModel> LeftMenuItems { get; set; } = new ObservableCollection<LeftMenuItemViewModel>();
 
-    public PageContentView? LeftExtraContent { get; init; } = null;
+    public PageContentViewModel? LeftExtraContent
+    {
+        get;
+        init
+        {
+            value?.ViewControl.DataContext = value.ViewModel;
+            field = value;
+        }
+    } = null;
 
     [ObservableProperty]
     public partial PageContentViewModel? Content { get; set; } = null;
+
+    [ObservableProperty]
+    public partial VerticalAlignment LeftExtraContentAlignment { get; set; } = VerticalAlignment.Stretch;
 
     protected static Geometry? Icon(string resourceKey)
     {
@@ -37,11 +49,11 @@ public abstract partial class PageViewModel(string id, string title = "Untitled"
             : throw new InvalidCastException("Type mismatch: please use current class as the first type parameter.");
     }
 
-    protected PageContentViewModel PageContent<TPageContent>()
+    protected PageContentViewModel PageContent<TPageContent>(bool bypassCache = false)
         where TPageContent : PageContentView, new()
     {
-        var view = PageContentView.GetViewCacheOrCreate<TPageContent>();
-        return new PageContentViewModelUsingPageViewModel(view, this);
+        var view = PageContentView.GetViewCacheOrCreate<TPageContent>(bypassCache);
+        return new SimplePageContentViewModel(view, this);
     }
 }
 
@@ -64,11 +76,11 @@ public abstract class PageViewModel<TMainContent> : PageViewModel
     }
 }
 
-file class PageContentViewModelUsingPageViewModel : PageContentViewModel
+file class SimplePageContentViewModel : PageContentViewModel
 {
     public override PageContentView ViewControl { get; }
 
-    public PageContentViewModelUsingPageViewModel(PageContentView view, PageViewModel viewModel)
+    public SimplePageContentViewModel(PageContentView view, PageViewModel viewModel)
     {
         ViewControl = view;
         ViewModel = viewModel;

@@ -8,7 +8,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="FlowLauncher.Views.MainPage"
         x:DataType="vm:MainPageViewModel">
-    <Grid>
+    <Grid Margin="10">
         <c:FlowRadioButton Text="Forward Test" HorizontalAlignment="Center" VerticalAlignment="Center"
                 Command="{Binding RootLayout.ForwardCommand}" CommandParameter="tools"/>
     </Grid>
