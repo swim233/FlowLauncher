@@ -54,8 +54,11 @@ public partial class RootLayout : UserControl
     {
         Dispatcher.UIThread.Invoke<Task>(async () =>
         {
-            var controlItems = LeftMenuItemsControl.ItemsPanelRoot?.Children;
-            if (controlItems == null || controlItems.Count == 0) return;
+            // wait for control loading
+            while (LeftMenuItemsControl.ItemsPanelRoot == null) await Task.Delay(100);
+            // trigger animations
+            var controlItems = LeftMenuItemsControl.ItemsPanelRoot.Children;
+            if (controlItems.Count == 0) return;
             foreach (var item in controlItems)
             {
                 await Task.Delay(TimeSpan.FromSeconds(.05));

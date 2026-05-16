@@ -1,8 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using Avalonia;
+using Avalonia.Layout;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
-using FlowLauncher.Platforms;
+using FlowLauncher.Components.Platforms;
 
 namespace FlowLauncher.Components.UI;
 
@@ -15,12 +16,23 @@ public abstract partial class PageViewModel(string id, string title = "Untitled"
     public string Title { get; protected set => SetProperty(ref field, value); } = title;
 
     [ObservableProperty]
-    public partial Collection<MenuItemViewModel> LeftMenuItems { get; set; } = new ObservableCollection<MenuItemViewModel>();
+    public partial Collection<LeftMenuItemViewModel> LeftMenuItems { get; set; } = new ObservableCollection<LeftMenuItemViewModel>();
 
-    public PageContent? LeftExtraContent { get; init; } = null;
+    public PageContentViewModel? LeftExtraContent
+    {
+        get;
+        init
+        {
+            value?.ViewControl.DataContext = value.ViewModel;
+            field = value;
+        }
+    } = null;
 
     [ObservableProperty]
     public partial PageContentViewModel? Content { get; set; } = null;
+
+    [ObservableProperty]
+    public partial VerticalAlignment LeftExtraContentAlignment { get; set; } = VerticalAlignment.Stretch;
 
     protected static Geometry? Icon(string resourceKey)
     {
@@ -37,11 +49,11 @@ public abstract partial class PageViewModel(string id, string title = "Untitled"
             : throw new InvalidCastException("Type mismatch: please use current class as the first type parameter.");
     }
 
-    protected PageContentViewModel PageContent<TPageContent>()
-        where TPageContent : PageContent, new()
+    protected PageContentViewModel PageContent<TPageContent>(bool bypassCache = false)
+        where TPageContent : PageContentView, new()
     {
-        var view = new TPageContent();
-        return new PageContentViewModelUsingPageViewModel(view, this);
+        var view = PageContentView.GetViewCacheOrCreate<TPageContent>(bypassCache);
+        return new SimplePageContentViewModel(view, this);
     }
 }
 
@@ -56,7 +68,7 @@ public abstract class PageViewModel<TThisClass, TMainContent> : PageViewModel
 }
 
 public abstract class PageViewModel<TMainContent> : PageViewModel
-    where TMainContent : PageContent, new()
+    where TMainContent : PageContentView, new()
 {
     protected PageViewModel(string id, string title = "Untitled") : base(id, title)
     {
@@ -64,11 +76,11 @@ public abstract class PageViewModel<TMainContent> : PageViewModel
     }
 }
 
-file class PageContentViewModelUsingPageViewModel : PageContentViewModel
+file class SimplePageContentViewModel : PageContentViewModel
 {
-    public override PageContent ViewControl { get; }
+    public override PageContentView ViewControl { get; }
 
-    public PageContentViewModelUsingPageViewModel(PageContent view, PageViewModel viewModel)
+    public SimplePageContentViewModel(PageContentView view, PageViewModel viewModel)
     {
         ViewControl = view;
         ViewModel = viewModel;

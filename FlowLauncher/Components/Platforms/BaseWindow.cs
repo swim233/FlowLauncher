@@ -1,9 +1,7 @@
 ﻿using Avalonia.Controls;
-using FlowLauncher.ViewModels;
-using FlowNet.Core;
 using RootLayoutViewModel = FlowLauncher.Components.UI.RootLayoutViewModel;
 
-namespace FlowLauncher.Platforms;
+namespace FlowLauncher.Components.Platforms;
 
 public class BaseWindow : Window
 {

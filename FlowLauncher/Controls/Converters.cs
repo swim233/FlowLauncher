@@ -19,4 +19,11 @@ public static class Converters
         while (it.MoveNext()) if (it.Current != value) return false;
         return true;
     });
+
+    public static readonly FuncMultiValueConverter<object?, object?> IfBranch = new(static parts =>
+    {
+        var list = parts.ToList();
+        if (list is not [bool condition, _, _]) return null;
+        return condition ? list[1] : list[2];
+    });
 }

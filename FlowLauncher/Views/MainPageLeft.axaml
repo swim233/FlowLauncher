@@ -3,13 +3,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:FlowLauncher.ViewModels"
-        xmlns:c="clr-namespace:FlowLauncher.Controls"
-        xmlns:r="clr-namespace:FlowLauncher.Resources"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="FlowLauncher.Views.MainPage"
+        x:Class="FlowLauncher.Views.MainPageLeft"
         x:DataType="vm:MainPageViewModel">
-    <Grid Margin="10">
-        <c:FlowRadioButton Text="Forward Test" HorizontalAlignment="Center" VerticalAlignment="Center"
-                Command="{Binding RootLayout.ForwardCommand}" CommandParameter="tools"/>
+    <Grid Width="300">
     </Grid>
 </UserControl>

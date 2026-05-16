@@ -49,9 +49,12 @@ public partial class RootLayoutViewModel : ViewModelBase
         private set => SetProperty(ref field, value);
     }
 
+    [ObservableProperty]
+    public partial bool CurrentPageHasLeftExtraContent { get; private set; }
+
     [ObservableProperty] public partial double _LeftMenuControl_TranslateX { get; private set; } = 0;
     [ObservableProperty] public partial double _LeftMenuControl_Opacity { get; private set; } = 1;
-    [ObservableProperty] public partial double _LeftExtraControl_Scale { get; private set; } = 0;
+    [ObservableProperty] public partial double _LeftExtraControl_Scale { get; private set; } = 1;
     [ObservableProperty] public partial double _LeftExtraControl_Opacity { get; private set; } = 1;
     [ObservableProperty] public partial double _MainContent_TranslateY { get; internal set; } = 0;
     [ObservableProperty] public partial double _MainContent_Opacity { get; internal set; } = 1;
@@ -72,20 +75,24 @@ public partial class RootLayoutViewModel : ViewModelBase
         Dispatcher.UIThread.Invoke(async () =>
         {
             CurrentPagePreview = page;
-            _LeftExtraControl_Scale = .5;
+            _MainContent_Opacity = 0;
+            _LeftExtraControl_Scale = .6;
             _LeftExtraControl_Opacity = 0;
             _LeftMenuControl_TranslateX = -20;
             _LeftMenuControl_Opacity = 0;
+            await Task.Delay(TimeSpan.FromSeconds(.05));
             _MainContent_TranslateY = -80;
-            _MainContent_Opacity = 0;
-            await Task.Delay(TimeSpan.FromSeconds(.1));
+            await Task.Delay(TimeSpan.FromSeconds(.05));
+            CurrentPageHasLeftExtraContent = page.LeftExtraContent != null;
             CurrentPage = page;
+            page.Content?.ViewControl.DataContext = page.Content.ViewModel;
             _LeftExtraControl_Scale = 1;
             _LeftExtraControl_Opacity = 1;
             _LeftMenuControl_TranslateX = 0;
             _LeftMenuControl_Opacity = 1;
             await Task.Delay(TimeSpan.FromSeconds(.1));
             _MainContent_TranslateY = 0;
+            await Task.Delay(TimeSpan.FromSeconds(.05));
             _MainContent_Opacity = 1;
         });
     }
@@ -106,12 +113,15 @@ public partial class RootLayoutViewModel : ViewModelBase
         Dispatcher.UIThread.Invoke(async () =>
         {
             CurrentPageContentPreview = target;
-            _MainContent_TranslateY = -80;
             _MainContent_Opacity = 0;
-            await Task.Delay(TimeSpan.FromSeconds(.1));
+            await Task.Delay(TimeSpan.FromSeconds(.05));
+            _MainContent_TranslateY = -80;
+            await Task.Delay(TimeSpan.FromSeconds(.05));
             CurrentPagePreview.Content = target;
+            target.ViewControl.DataContext = target.ViewModel;
             await Task.Delay(TimeSpan.FromSeconds(.1));
             _MainContent_TranslateY = 0;
+            await Task.Delay(TimeSpan.FromSeconds(.05));
             _MainContent_Opacity = 1;
         });
     }
