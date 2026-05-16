@@ -15,7 +15,7 @@ public abstract partial class PageViewModel(string id, string title = "Untitled"
     public string Title { get; protected set => SetProperty(ref field, value); } = title;
 
     [ObservableProperty]
-    public partial Collection<MenuItemViewModel> LeftMenuItems { get; set; } = new ObservableCollection<MenuItemViewModel>();
+    public partial Collection<LeftMenuItemViewModel> LeftMenuItems { get; set; } = new ObservableCollection<LeftMenuItemViewModel>();
 
     public PageContentView? LeftExtraContent { get; init; } = null;
 

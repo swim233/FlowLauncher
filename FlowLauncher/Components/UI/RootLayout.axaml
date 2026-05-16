@@ -84,11 +84,11 @@
                             <ItemsControl.ItemTemplate><DataTemplate>
                                 <ContentControl Content="{Binding}" Opacity="0" Margin=".3,0,0,0">
                                     <ContentControl.DataTemplates>
-                                        <DataTemplate DataType="ui:MenuTitleViewModel">
+                                        <DataTemplate DataType="ui:LeftMenuTitleViewModel">
                                             <TextBlock Text="{Binding Title}" FontSize="14" Margin="12,15,30,5"
                                                     Foreground="{DynamicResource FlowTextSecondary}"/>
                                         </DataTemplate>
-                                        <DataTemplate DataType="ui:MenuItemViewModel">
+                                        <DataTemplate DataType="ui:LeftMenuItemViewModel">
                                             <Grid>
                                                 <Grid.Tag>
                                                     <MultiBinding Converter="{x:Static c:Converters.AllEqual}">

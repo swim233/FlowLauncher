@@ -80,6 +80,7 @@ public partial class RootLayoutViewModel : ViewModelBase
             _MainContent_Opacity = 0;
             await Task.Delay(TimeSpan.FromSeconds(.1));
             CurrentPage = page;
+            page.Content?.ViewControl.DataContext = page.Content.ViewModel;
             _LeftExtraControl_Scale = 1;
             _LeftExtraControl_Opacity = 1;
             _LeftMenuControl_TranslateX = 0;
@@ -110,6 +111,7 @@ public partial class RootLayoutViewModel : ViewModelBase
             _MainContent_Opacity = 0;
             await Task.Delay(TimeSpan.FromSeconds(.1));
             CurrentPagePreview.Content = target;
+            target.ViewControl.DataContext = target.ViewModel;
             await Task.Delay(TimeSpan.FromSeconds(.1));
             _MainContent_TranslateY = 0;
             _MainContent_Opacity = 1;

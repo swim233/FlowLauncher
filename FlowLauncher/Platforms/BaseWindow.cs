@@ -1,5 +1,4 @@
 ﻿using Avalonia.Controls;
-using FlowNet.Core;
 using RootLayoutViewModel = FlowLauncher.Components.UI.RootLayoutViewModel;
 
 namespace FlowLauncher.Platforms;

@@ -1,6 +1,4 @@
-﻿using FlowNet.Core;
-
-namespace FlowLauncher.Components.Debugging;
+﻿namespace FlowLauncher.Components.Debugging;
 
 [Flow.Scope("info")]
 public static partial class InfoReporter

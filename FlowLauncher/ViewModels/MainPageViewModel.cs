@@ -9,23 +9,23 @@ public partial class MainPageViewModel : PageViewModel<MainPage>
     public MainPageViewModel() : base("main", Strings.PageTitleMain)
     {
         LeftMenuItems = [
-            new MenuTitleViewModel
+            new LeftMenuTitleViewModel
             {
                 Title = "Title"
             },
-            new MenuItemViewModel
+            new LeftMenuItemViewModel
             {
                 Title = "Main",
                 Icon = Icon("IconSettings"),
                 TargetContent = Content
             },
-            new MenuItemViewModel
+            new LeftMenuItemViewModel
             {
                 Title = "456",
                 Icon = Icon("IconSettings"),
                 TargetContent = PageContent<MainPage>()
             },
-            new MenuItemViewModel
+            new LeftMenuItemViewModel
             {
                 Title = "789",
                 Icon = Icon("IconSettings")

@@ -23,7 +23,10 @@ public partial class MenuItemViewModel : ViewModelBase
 
     [ObservableProperty]
     public partial object? CommandParameter { get; set; } = null;
+}
 
+public partial class LeftMenuItemViewModel : MenuItemViewModel
+{
     [ObservableProperty]
     public partial PageContentViewModel? TargetContent { get; set; } = null;
 }
